@@ -77,14 +77,12 @@ def rest_of_ORF(dna):
     """
     # TODO: use less data, be faster. find a functional way to do this.
     stop_codons = ['TAA', 'TAG', 'TGA'] #should probably be defined globally
-    index = len(dna)-1
-    i = 0
-    for codon in stop_codons:
-        inew = dna.find(codon)
-        if inew > i:
-            index = inew
-            i = inew
-    return dna[0:index]
+    for i in range(0,len(dna),3):
+        codon = dna[i:i+3]
+        for stop in stop_codons:
+            if (codon == stop):
+                return dna[:i]
+    return dna
 
 
 
@@ -103,6 +101,20 @@ def find_all_ORFs_oneframe(dna):
     """
     # TODO: implement this
     stop_codons = ['TAA', 'TAG', 'TGA'] #should probably be defined globally
+    start_codon = 'ATG'
+    orfs = []
+    i =0
+
+    while i < len(dna):
+        codon = dna[i:i+3]
+        if (codon ==start_codon):
+            orf = rest_of_ORF(dna[i:])
+            orfs.append(orf)
+            i = i + len(orf)
+        i = i +3
+    return orfs
+
+
 
 
 
@@ -120,7 +132,8 @@ def find_all_ORFs(dna):
     ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
     """
     # TODO: implement this
-    pass
+    return [i for j in range(0,3) for i in find_all_ORFs_oneframe(dna[j:])]
+    #list comprehension is cool
 
 
 def find_all_ORFs_both_strands(dna):
@@ -133,8 +146,7 @@ def find_all_ORFs_both_strands(dna):
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
     # TODO: implement this
-    pass
-
+    return find_all_ORFs(dna) + find_all_ORFs(get_reverse_complement(dna))
 
 def longest_ORF(dna):
     """ Finds the longest ORF on both strands of the specified DNA and returns it
