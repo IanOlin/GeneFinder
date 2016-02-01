@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-YOUR HEADER COMMENT HERE
+Gene Finder mini project for Olin Software Design Spring 2016
+The base of this code was not written by the author
 
-@author: YOUR NAME HERE
+Date last worked on: 1/19/16
+
+@author: Ian Paul
 
 """
 
@@ -30,8 +33,15 @@ def get_complement(nucleotide):
     >>> get_complement('C')
     'G'
     """
-    # TODO: implement this
-    pass
+    # TODO: find real implementation of this, also U?
+    if nucleotide == 'A':
+        return 'T'
+    elif nucleotide == 'T':
+        return 'A'
+    elif nucleotide == 'G':
+        return 'C'
+    elif nucleotide == 'C':
+        return 'G'
 
 
 def get_reverse_complement(dna):
@@ -45,8 +55,11 @@ def get_reverse_complement(dna):
     >>> get_reverse_complement("CCGCGTTCA")
     'TGAACGCGG'
     """
-    # TODO: implement this
-    pass
+    # TODO:
+    complement = ''
+    for i in dna:
+        complement = get_complement(i) + complement
+    return complement
 
 
 def rest_of_ORF(dna):
@@ -62,8 +75,17 @@ def rest_of_ORF(dna):
     >>> rest_of_ORF("ATGAGATAGG")
     'ATGAGA'
     """
-    # TODO: implement this
-    pass
+    # TODO: use less data, be faster. find a functional way to do this.
+    stop_codons = ['TAA', 'TAG', 'TGA'] #should probably be defined globally
+    index = len(dna)-1
+    i = 0
+    for codon in stop_codons:
+        inew = dna.find(codon)
+        if inew > i:
+            index = inew
+            i = inew
+    return dna[0:index]
+
 
 
 def find_all_ORFs_oneframe(dna):
@@ -80,7 +102,8 @@ def find_all_ORFs_oneframe(dna):
     ['ATGCATGAATGTAGA', 'ATGTGCCC']
     """
     # TODO: implement this
-    pass
+    stop_codons = ['TAA', 'TAG', 'TGA'] #should probably be defined globally
+
 
 
 def find_all_ORFs(dna):
