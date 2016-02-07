@@ -33,7 +33,7 @@ def get_complement(nucleotide):
     >>> get_complement('C')
     'G'
     """
-    # TODO: find real implementation of this, also U?
+    #TODO use the list index trick
     if nucleotide == 'A':
         return 'T'
     elif nucleotide == 'T':
@@ -155,7 +155,11 @@ def longest_ORF(dna):
     'ATGCTACATTCGCAT'
     """
     # TODO: implement this
-    pass
+    longest = ''
+    for orf in find_all_ORFs_both_strands(dna):
+    	if len(orf) > len(longest):
+    		longest = orf
+    return longest
 
 
 def longest_ORF_noncoding(dna, num_trials):
@@ -164,9 +168,16 @@ def longest_ORF_noncoding(dna, num_trials):
 
         dna: a DNA sequence
         num_trials: the number of random shuffles
-        returns: the maximum length longest ORF """
-    # TODO: implement this
-    pass
+        returns: the maximum length longest ORF
+         """
+    # TODO: find some other way to test, tested by hand, seems legit
+    res = 0
+    for i in range(num_trials):
+    	working_dna = shuffle_string(dna)
+    	if len(longest_ORF(working_dna)) > res:
+    		res = len(longest_ORF(working_dna))
+    return res
+
 
 
 def coding_strand_to_AA(dna):
@@ -184,7 +195,10 @@ def coding_strand_to_AA(dna):
         'MPA'
     """
     # TODO: implement this
-    pass
+    acid = ''
+    for i in range(0,len(dna)/3):
+    	acid = acid + aa_table[dna[3*i:3*(i+1)]]
+    return acid
 
 
 def gene_finder(dna):
@@ -194,8 +208,21 @@ def gene_finder(dna):
         returns: a list of all amino acid sequences coded by the sequence dna.
     """
     # TODO: implement this
-    pass
+    threshold = longest_ORF_noncoding(dna,1500)
+    orfs = find_all_ORFs_both_strands(dna)
+    genes = []
+    for orf in orfs:
+    	if orf < threshold:
+    		orfs.remove(orf)
+    for orf in orfs:
+    	genes.append(coding_strand_to_AA(orf))
+    return genes
+
 
 if __name__ == "__main__":
     import doctest
+    from load import load_seq
+    dna = load_seq("./data/X73525.fa")
+    print(dna)
     doctest.testmod()
+    #print(gene_finder(dna))
