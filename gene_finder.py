@@ -212,10 +212,8 @@ def gene_finder(dna):
     orfs = find_all_ORFs_both_strands(dna)
     genes = []
     for orf in orfs:
-    	if orf < threshold:
-    		orfs.remove(orf)
-    for orf in orfs:
-    	genes.append(coding_strand_to_AA(orf))
+    	if len(orf) > threshold:
+    		genes.append(coding_strand_to_AA(orf))
     return genes
 
 
@@ -223,6 +221,5 @@ if __name__ == "__main__":
     import doctest
     from load import load_seq
     dna = load_seq("./data/X73525.fa")
-    print(dna)
     doctest.testmod()
-    #print(gene_finder(dna))
+    print(gene_finder(dna))
