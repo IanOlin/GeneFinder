@@ -3,7 +3,7 @@
 Gene Finder mini project for Olin Software Design Spring 2016
 The base of this code was not written by the author
 
-Date last worked on: 1/19/16
+Date last worked on: 2/7/16
 
 @author: Ian Paul
 
@@ -34,6 +34,8 @@ def get_complement(nucleotide):
     'G'
     """
     #TODO use the list index trick
+    #complements = ['T','G','A','C']
+    #return complements[['A','C','T','G'].index(nucleotide)]
     if nucleotide == 'A':
         return 'T'
     elif nucleotide == 'T':
